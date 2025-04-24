@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">labexam3</string>
+    <string name="balance_text">Balance: Rs. 0.0</string>
+    <string name="income_text">Income: Rs. 0.0</string>
+    <string name="expense_text">Expenses: Rs. 0.0</string>
+    <string name="greeting">Hi, User!</string>
+    <string name="email">user@example.com</string>
+    <string name="transfer_limit">Transfer Limit: Rs. 0.0\nSpent: Rs. 0.0</string>
+    <string name="add_money">Add Money</string>
+    <string name="goal">Goal</string>
+    <string name="budget">Budget</string>
+    <string name="history">History</string>
+    <string name="more">More</string>
+    <string name="wallet">Wallet</string>
+    <string name="income_label">Income</string>
+    <string name="spending_label">Spending</string>
+    <string name="latest_transactions">Latest Transactions</string>
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_transactions">Transactions</string>
+    <string name="nav_statistics">Statistics</string>
+    <string name="nav_settings">Settings</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
