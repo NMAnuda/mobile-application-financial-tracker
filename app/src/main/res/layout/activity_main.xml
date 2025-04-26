@@ -4,233 +4,301 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_light">
+    android:background="#F5F5F5">
 
     <!-- Header Section with Gradient -->
-    <LinearLayout
+
+    <!-- Quick Action Buttons -->
+    <androidx.cardview.widget.CardView
         android:id="@+id/headerSection"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/header_gradient"
-        android:orientation="vertical"
-        android:padding="24dp"
+        android:layout_width="411dp"
+        android:layout_height="290dp"
+        android:layout_marginTop="-15dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="6dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:text="@string/greeting"
-            android:textColor="@android:color/white"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/header_gradient"
+            android:orientation="vertical"
+            android:padding="24dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="@string/email"
-            android:textColor="#B0BEC5"
-            android:textSize="14sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="@string/greeting"
+                android:textColor="@android:color/white"
+                android:textSize="26sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="Track Your Financial Goals"
-            android:textColor="#B0BEC5"
-            android:textSize="16sp" />
+            <TextView
+                android:id="@+id/emailText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="user@example.com"
+                android:textColor="#E0E0E0"
+                android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/balanceText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="@string/balance_text"
-            android:textColor="@android:color/white"
-            android:textSize="36sp"
-            android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="Track Your Financial Goals"
+                android:textColor="#E0E0E0"
+                android:textSize="16sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/transfer_limit"
-            android:textColor="#B0BEC5"
-            android:textSize="14sp" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/balanceText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="@string/balance_text"
+                android:textColor="@android:color/white"
+                android:textSize="40sp"
+                android:textStyle="bold" />
 
-    <!-- Quick Action Buttons -->
+            <TextView
+                android:id="@+id/transactionLimitText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Remaining Transaction Limit: Rs. 0"
+                android:textColor="#E0E0E0"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Wallet Section -->
+
+    <!-- Latest Transactions Section -->
+
     <LinearLayout
         android:id="@+id/actionButtons"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/card_background"
+        android:layout_marginTop="8dp"
         android:gravity="center"
         android:orientation="horizontal"
+        android:paddingHorizontal="8dp"
         android:paddingVertical="16dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/headerSection">
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:background="@drawable/circular_button"
-            android:paddingHorizontal="12dp"
-            android:text="@string/add_money"
-            android:textColor="@color/text_primary"
-            android:textSize="12sp" />
-
-        <Button
             android:id="@+id/GoalButton"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:background="@drawable/circular_button"
+            android:layout_marginHorizontal="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_gradient"
+            android:drawableStart="@android:drawable/ic_menu_myplaces"
+            android:drawablePadding="8dp"
+            android:elevation="4dp"
             android:paddingHorizontal="12dp"
+            android:paddingVertical="10dp"
             android:text="@string/goal"
-            android:textColor="@color/text_primary"
-            android:textSize="12sp" />
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:transitionName="goal_transition" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:id="@+id/budgetButton"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:background="@drawable/circular_button"
+            android:layout_marginHorizontal="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_gradient"
+            android:drawableStart="@android:drawable/ic_menu_slideshow"
+            android:drawablePadding="8dp"
+            android:elevation="4dp"
             android:paddingHorizontal="12dp"
+            android:paddingVertical="10dp"
             android:text="@string/budget"
-            android:textColor="@color/text_primary"
-            android:textSize="12sp" />
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:transitionName="budget_transition" />
 
         <Button
             android:id="@+id/HistorylButton"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:background="@drawable/circular_button"
+            android:layout_marginHorizontal="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_gradient"
+            android:drawableStart="@android:drawable/ic_menu_recent_history"
+            android:drawablePadding="8dp"
+            android:elevation="4dp"
             android:paddingHorizontal="12dp"
+            android:paddingVertical="10dp"
             android:text="@string/history"
-            android:textColor="@color/text_primary"
-            android:textSize="12sp" />
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:transitionName="history_transition" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:background="@drawable/circular_button"
-            android:paddingHorizontal="12dp"
-            android:text="@string/more"
-            android:textColor="@color/text_primary"
-            android:textSize="12sp" />
     </LinearLayout>
 
-    <!-- Wallet Section -->
     <LinearLayout
         android:id="@+id/walletSection"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="412dp"
+        android:layout_height="146dp"
         android:orientation="horizontal"
-        android:padding="16dp"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/actionButtons">
+        app:layout_constraintTop_toBottomOf="@id/actionButtons"
+        app:layout_constraintVertical_bias="0.0">
 
-        <LinearLayout
+        <!-- Income Card -->
+        <androidx.cardview.widget.CardView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:background="@drawable/rounded_card"
-            android:orientation="vertical"
-            android:padding="16dp">
+            app:cardBackgroundColor="#E8F5E9"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="@string/income_label"
-                android:textColor="@color/text_secondary"
-                android:textSize="16sp" />
+                android:orientation="vertical"
+                android:padding="16dp">
 
-            <TextView
-                android:id="@+id/incomeText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/income_text"
-                android:textColor="@color/income_icon_tint"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-        </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="horizontal">
 
-        <LinearLayout
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="8dp"
+                        android:src="@android:drawable/stat_sys_download"
+                        app:tint="@android:color/holo_green_dark" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/income_label"
+                        android:textColor="@android:color/holo_green_dark"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/incomeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/income_text"
+                    android:textColor="@android:color/holo_green_dark"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Expense Card -->
+        <androidx.cardview.widget.CardView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_weight="1"
-            android:background="@drawable/rounded_card"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="@string/spending_label"
-                android:textColor="@color/text_secondary"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/expenseText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/expense_text"
-                android:textColor="@color/spending_icon_tint"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <!-- Latest Transactions Section -->
-
-    <!-- Bottom Right Add (+) Button -->
-    <ScrollView
-        android:id="@+id/recentTransactionsContainer"
-        android:layout_width="415dp"
-        android:layout_height="304dp"
-        android:paddingHorizontal="16dp"
-        android:paddingTop="8dp"
-        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/walletSection"
-        app:layout_constraintVertical_bias="0.058">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:text="@string/latest_transactions"
-                android:textColor="@color/text_primary"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+            app:cardBackgroundColor="#FFEBEE"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp">
 
             <LinearLayout
-                android:id="@+id/transactionsInnerContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="8dp"
+                        android:src="@android:drawable/stat_sys_upload"
+                        app:tint="@android:color/holo_red_dark" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/spending_label"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/expenseText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/expense_text"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+    <!-- Floating Add (+) Button -->
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="398dp"
+        android:layout_height="367dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.461"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/walletSection"
+        app:layout_constraintVertical_bias="0.0">
+
+        <ScrollView
+            android:id="@+id/recentTransactionsContainer"
+            android:layout_width="390dp"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="8dp">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" />
-        </LinearLayout>
-    </ScrollView>
+                android:orientation="vertical">
 
-    <!-- Bottom Navigation View -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:text="@string/latest_transactions"
+                    android:textColor="#0288D1"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/transactionsInnerContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+            </LinearLayout>
+        </ScrollView>
+    </androidx.cardview.widget.CardView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addButton"
@@ -238,24 +306,13 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="72dp"
+        android:layout_marginBottom="20dp"
         android:src="@android:drawable/ic_input_add"
-        app:backgroundTint="#2196F3"
-        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:tint="@android:color/white" />
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="417dp"
-        android:layout_height="98dp"
-        android:background="?android:attr/windowBackground"
+        app:backgroundTint="#0288D1"
+        app:fabSize="normal"
+        app:elevation="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/walletSection"
-        app:layout_constraintVertical_bias="1.0"
-        app:menu="@menu/bottomupmenu" />
+        app:tint="@android:color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

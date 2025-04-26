@@ -39,7 +39,7 @@ class LoginActivity : AppCompatActivity() {
             if (savedUsername == null || savedPassword == null) {
                 Toast.makeText(this, "No account found. Please sign up first.", Toast.LENGTH_SHORT).show()
             } else if (username == savedUsername && password == savedPassword) {
-                startActivity(Intent(this, MainActivity::class.java))
+                startActivity(Intent(this, HostActivity::class.java))
                 finish()
             } else {
                 Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show()

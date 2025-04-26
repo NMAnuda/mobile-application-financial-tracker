@@ -1,16 +1,28 @@
 package com.example.labexam3
 
+import android.annotation.SuppressLint
+import android.app.AlarmManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat
+import java.text.SimpleDateFormat
+import java.util.*
+
 class GoalActivity : AppCompatActivity() {
 
     private lateinit var goalsListContainer: LinearLayout
@@ -24,6 +36,9 @@ class GoalActivity : AppCompatActivity() {
         goalsListContainer = findViewById(R.id.goalsListContainer)
         addGoalButton = findViewById(R.id.addGoalButton)
         sharedPreferences = getSharedPreferences("financeData", MODE_PRIVATE)
+
+        // Create notification channel
+        createNotificationChannel()
 
         // Dummy data if needed
         if (sharedPreferences.getString("goals", "").isNullOrEmpty()) {
@@ -42,16 +57,32 @@ class GoalActivity : AppCompatActivity() {
         super.onResume()
         loadGoals()
     }
+
     private fun loadGoals() {
         val goals = sharedPreferences.getString("goals", "") ?: ""
         val goalList = goals.split("\n").filter { it.isNotBlank() }
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val currentDate = Calendar.getInstance()
 
         goalsListContainer.removeAllViews()
 
-        for (goal in goalList) {
+        for ((index, goal) in goalList.withIndex()) {
             val parts = goal.split(" | ")
             if (parts.size == 3) {
                 val (name, amount, deadline) = parts
+
+                // Parse deadline and schedule notification
+                try {
+                    val deadlineDate = dateFormat.parse(deadline)
+                    if (deadlineDate != null) {
+                        val deadlineCalendar = Calendar.getInstance().apply { time = deadlineDate }
+                        if (!deadlineCalendar.before(currentDate)) {
+                            scheduleNotification(index, name, deadlineCalendar.timeInMillis)
+                        }
+                    }
+                } catch (e: Exception) {
+                    // Handle parsing error if needed
+                }
 
                 val card = CardView(this).apply {
                     layoutParams = LinearLayout.LayoutParams(
@@ -111,5 +142,57 @@ class GoalActivity : AppCompatActivity() {
         }
     }
 
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "Goal Reminders"
+            val descriptionText = "Notifications for goal deadlines"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel("GOAL_CHANNEL", name, importance).apply {
+                description = descriptionText
+            }
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
 
+    @SuppressLint("ScheduleExactAlarm")
+    private fun scheduleNotification(goalId: Int, goalName: String, deadlineTime: Long) {
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(this, GoalNotificationReceiver::class.java).apply {
+            putExtra("goalName", goalName)
+            putExtra("goalId", goalId)
+        }
+        val pendingIntent = PendingIntent.getBroadcast(
+            this,
+            goalId,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        // Schedule the alarm for the exact deadline
+        alarmManager.setExactAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+            deadlineTime,
+            pendingIntent
+        )
+    }
+}
+
+class GoalNotificationReceiver : BroadcastReceiver() {
+    override fun onReceive(context: Context, intent: Intent) {
+        val goalName = intent.getStringExtra("goalName") ?: "Goal"
+        val goalId = intent.getIntExtra("goalId", 0)
+
+        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notification = NotificationCompat.Builder(context, "GOAL_CHANNEL")
+            .setSmallIcon(android.R.drawable.ic_dialog_info)
+            .setContentTitle("Goal Deadline Reached")
+            .setContentText("The deadline for your goal '$goalName' has arrived!")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setAutoCancel(true)
+            .build()
+
+        notificationManager.notify(goalId, notification)
+    }
 }

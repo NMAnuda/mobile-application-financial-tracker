@@ -16,6 +16,36 @@
         android:gravity="center"
         android:layout_marginBottom="24dp" />
 
+    <Spinner
+        android:id="@+id/editTypeSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/edit_text_bg" />
+
+    <EditText
+        android:id="@+id/editDateInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Date (yyyy-MM-dd)"
+        android:inputType="date"
+        android:padding="16dp"
+        android:textSize="16sp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/edit_text_bg" />
+
+    <EditText
+        android:id="@+id/editCategoryInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Category"
+        android:inputType="text"
+        android:padding="16dp"
+        android:textSize="16sp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/edit_text_bg" />
+
     <EditText
         android:id="@+id/editAmountInput"
         android:layout_width="match_parent"
@@ -35,14 +65,6 @@
         android:inputType="text"
         android:padding="16dp"
         android:textSize="16sp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/edit_text_bg" />
-
-    <Spinner
-        android:id="@+id/editTypeSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="12dp"
         android:layout_marginBottom="24dp"
         android:background="@drawable/edit_text_bg" />
 
