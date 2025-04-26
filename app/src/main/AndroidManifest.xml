@@ -48,14 +48,16 @@
             android:name=".GoalActivity"
             android:exported="false" />
         <activity
-            android:name=".AddGoalActivity"
-            android:exported="false" />
+            android:name=".Profile"
+            android:exported="false"
+            tools:ignore="Instantiatable" />
         <activity
             android:name=".AllTransactionsActivity"
             android:exported="false" />
         <activity
             android:name=".EditTransactionActivity"
             android:exported="false" />
+
 
         <receiver android:name=".GoalNotificationReceiver" android:exported="false" />
         <receiver android:name=".BudgetNotificationReceiver" android:exported="false" />

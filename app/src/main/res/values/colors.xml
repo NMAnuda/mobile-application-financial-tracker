@@ -13,6 +13,9 @@
     <color name="background_start">#E3F2FD</color>
     <color name="background_end">#BBDEFB</color>
 
+    <color name="primaryColor">#2196F3</color>
+    <color name="secondaryColor">#4CAF50</color>
+    <color name="iconColor">#616161</color>
 
     <color name="primary_color">#6200EE</color>
 

@@ -4,7 +4,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
@@ -19,9 +18,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.json.JSONObject
 import java.io.File
+import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
@@ -42,14 +41,12 @@ class AllTransactionsActivity : AppCompatActivity() {
         editor = sharedPreferences.edit()
 
         // Initialize Backup and Restore buttons
-        findViewById<Button>(R.id.backupButton)?.setOnClickListener {
-            backupData()
-        }
-        findViewById<Button>(R.id.restoreButton)?.setOnClickListener {
-            restoreData()
-        }
-
-
+//        findViewById<Button>(R.id.backupButton).setOnClickListener {
+//            backupData()
+//        }
+//        findViewById<Button>(R.id.restoreButton).setOnClickListener {
+//            restoreData()
+//        }
 
         loadTransactions()
     }
@@ -81,7 +78,6 @@ class AllTransactionsActivity : AppCompatActivity() {
                 try {
                     contentResolver.openInputStream(uri)?.use { inputStream ->
                         val jsonString = inputStream.bufferedReader().use { it.readText() }
-                        Log.d("AllTransactionsActivity", "Restoring JSON: $jsonString")
                         val json = JSONObject(jsonString)
                         editor.putString("transactions", json.optString("transactions", ""))
                         editor.putString("transaction_details", json.optString("transaction_details", ""))
@@ -103,6 +99,7 @@ class AllTransactionsActivity : AppCompatActivity() {
 
     private fun backupData() {
         try {
+            // Check storage permission for Android 9 and below
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P &&
                 checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
             ) {
@@ -113,6 +110,7 @@ class AllTransactionsActivity : AppCompatActivity() {
                 return
             }
 
+            // Create JSON object with all SharedPreferences data
             val json = JSONObject().apply {
                 put("transactions", sharedPreferences.getString("transactions", ""))
                 put("transaction_details", sharedPreferences.getString("transaction_details", ""))
@@ -122,19 +120,17 @@ class AllTransactionsActivity : AppCompatActivity() {
                 put("budget_percentage", sharedPreferences.getFloat("budget_percentage", 50f))
             }
 
+            // Generate filename with timestamp
             val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
             val fileName = "FinanceBackup_$timestamp.json"
 
+            // Save to Documents directory
             val documentsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-            if (!documentsDir.exists()) {
-                documentsDir.mkdirs()
-            }
             val backupFile = File(documentsDir, fileName)
             FileOutputStream(backupFile).use { outputStream ->
                 outputStream.write(json.toString().toByteArray())
             }
 
-            Log.d("AllTransactionsActivity", "Backup saved to ${backupFile.absolutePath}")
             Toast.makeText(this, "Backup saved to Documents/$fileName", Toast.LENGTH_LONG).show()
         } catch (e: Exception) {
             Log.e("AllTransactionsActivity", "Error backing up data: ${e.message}", e)
@@ -144,6 +140,7 @@ class AllTransactionsActivity : AppCompatActivity() {
 
     private fun restoreData() {
         try {
+            // Check storage permission for Android 9 and below
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P &&
                 checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
             ) {
@@ -154,14 +151,10 @@ class AllTransactionsActivity : AppCompatActivity() {
                 return
             }
 
-            val documentsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-            val files = documentsDir.listFiles()?.joinToString(", ") { it.name } ?: "None"
-            Log.d("AllTransactionsActivity", "Files in Documents: $files")
-
-            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            // Open file picker for JSON files
+            val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
                 type = "application/json"
                 addCategory(Intent.CATEGORY_OPENABLE)
-                putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("application/json", "text/plain"))
             }
             startActivityForResult(Intent.createChooser(intent, "Select Backup File"), REQUEST_CODE_RESTORE_FILE)
         } catch (e: Exception) {
@@ -185,7 +178,7 @@ class AllTransactionsActivity : AppCompatActivity() {
             val placeholder = TextView(this).apply {
                 text = "No transactions available"
                 textSize = 16f
-                setTextColor(Color.parseColor("#757575"))
+                setTextColor(ContextCompat.getColor(context, android.R.color.darker_gray))
                 setPadding(0, 16, 0, 16)
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -204,8 +197,10 @@ class AllTransactionsActivity : AppCompatActivity() {
             val amountString = parts.getOrNull(1) ?: "Rs. 0"
             val description = parts.getOrNull(2) ?: "No description"
 
+            // Extract amount without "Rs. " for matching
             val amount = amountString.replace("Rs. ", "").toFloatOrNull() ?: 0f
 
+            // Find matching transaction details
             val matchingDetail = transactionDetailsList.find { detail ->
                 val detailParts = detail.split(",")
                 val detailType = detailParts.getOrNull(0)
@@ -222,16 +217,16 @@ class AllTransactionsActivity : AppCompatActivity() {
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
                 ).apply {
-                    setMargins(0, 8, 0, 8)
+                    setMargins(32, 16, 32, 16)
                 }
-                radius = 12f
-                cardElevation = 4f
+                radius = 16f
+                cardElevation = 10f
                 setCardBackgroundColor(ContextCompat.getColor(context, android.R.color.white))
             }
 
             val innerLayout = LinearLayout(this).apply {
                 orientation = LinearLayout.VERTICAL
-                setPadding(16, 16, 16, 16)
+                setPadding(40, 40, 40, 40)
             }
 
             val typeView = TextView(this).apply {
@@ -278,13 +273,14 @@ class AllTransactionsActivity : AppCompatActivity() {
                 setPadding(0, 8, 0, 0)
             }
 
+            // Button container for Edit and Delete buttons
             val buttonContainer = LinearLayout(this).apply {
                 orientation = LinearLayout.HORIZONTAL
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 ).apply {
-                    topMargin = 8
+                    topMargin = 16
                 }
                 gravity = android.view.Gravity.END
             }
@@ -296,7 +292,7 @@ class AllTransactionsActivity : AppCompatActivity() {
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 ).apply {
-                    setMargins(0, 0, 8, 0)
+                    setMargins(0, 0, 16, 0)
                 }
                 setOnClickListener {
                     val intent = Intent(context, EditTransactionActivity::class.java)
@@ -321,6 +317,7 @@ class AllTransactionsActivity : AppCompatActivity() {
             innerLayout.addView(typeView)
             innerLayout.addView(dateView)
             innerLayout.addView(categoryView)
+            innerLayout.addView(divider)
             innerLayout.addView(amountView)
             innerLayout.addView(descriptionView)
             innerLayout.addView(buttonContainer)
@@ -331,11 +328,13 @@ class AllTransactionsActivity : AppCompatActivity() {
     }
 
     private fun deleteTransaction(transactionToDelete: String) {
+        // Parse the transaction to determine its type and amount
         val parts = transactionToDelete.split(": ", " - ")
         val type = parts.getOrNull(0) ?: "Unknown"
         val amountString = parts.getOrNull(1)?.replace("Rs. ", "") ?: "0"
         val amount = amountString.toFloatOrNull() ?: 0f
 
+        // Update financial summary (income, expenses, savings)
         var income = sharedPreferences.getFloat("income", 0f)
         var expenses = sharedPreferences.getFloat("expenses", 0f)
         var savings = sharedPreferences.getFloat("savings", 0f)
@@ -346,11 +345,13 @@ class AllTransactionsActivity : AppCompatActivity() {
             "saving" -> savings -= amount
         }
 
+        // Update transactions
         var transactions = sharedPreferences.getString("transactions", "") ?: ""
         transactions = transactions.split("\n")
             .filter { it.isNotBlank() && it != transactionToDelete }
             .joinToString("\n") { it }
 
+        // Update transaction_details
         var transactionDetails = sharedPreferences.getString("transaction_details", "") ?: ""
         val transactionDetailsList = transactionDetails.split("\n").filter { it.isNotBlank() }
         val matchingDetail = transactionDetailsList.find { detail ->
@@ -364,6 +365,7 @@ class AllTransactionsActivity : AppCompatActivity() {
             .filter { it != matchingDetail }
             .joinToString("\n") { it }
 
+        // Save updated values
         editor.putFloat("income", income.coerceAtLeast(0f))
         editor.putFloat("expenses", expenses.coerceAtLeast(0f))
         editor.putFloat("savings", savings.coerceAtLeast(0f))
@@ -371,6 +373,7 @@ class AllTransactionsActivity : AppCompatActivity() {
         editor.putString("transaction_details", transactionDetails)
         editor.apply()
 
+        // Reload the UI
         loadTransactions()
     }
 }
