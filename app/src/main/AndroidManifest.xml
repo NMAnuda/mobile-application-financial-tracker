@@ -58,7 +58,9 @@
             android:name=".EditTransactionActivity"
             android:exported="false" />
 
-
+        <activity
+            android:name=".AddGoalActivity"
+            android:exported="false" />
         <receiver android:name=".GoalNotificationReceiver" android:exported="false" />
         <receiver android:name=".BudgetNotificationReceiver" android:exported="false" />
     </application>

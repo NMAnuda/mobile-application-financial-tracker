@@ -21,48 +21,48 @@
     <!-- Goal Name -->
     <EditText
         android:id="@+id/goalNameInput"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="366dp"
+        android:layout_height="55dp"
         android:layout_marginTop="24dp"
-        android:hint="Goal name (e.g. New Laptop)"
         android:background="@drawable/edit_text_bg"
+        android:hint="Goal name (e.g. New Laptop)"
+        android:inputType="text"
         android:padding="12dp"
         android:textSize="16sp"
-        android:inputType="text"
-        app:layout_constraintTop_toBottomOf="@id/addGoalTitle"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/addGoalTitle" />
 
     <!-- Target Amount -->
     <EditText
         android:id="@+id/goalAmountInput"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="363dp"
+        android:layout_height="53dp"
         android:layout_marginTop="16dp"
-        android:hint="Target amount (Rs.)"
         android:background="@drawable/edit_text_bg"
+        android:hint="Target amount (Rs.)"
+        android:inputType="numberDecimal"
         android:padding="12dp"
         android:textSize="16sp"
-        android:inputType="numberDecimal"
-        app:layout_constraintTop_toBottomOf="@id/goalNameInput"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/goalNameInput" />
 
     <!-- Deadline -->
     <EditText
         android:id="@+id/goalDeadlineInput"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="366dp"
+        android:layout_height="56dp"
         android:layout_marginTop="16dp"
-        android:hint="Select Deadline"
         android:background="@drawable/edit_text_bg"
+        android:clickable="true"
+        android:focusable="false"
+        android:hint="Select Deadline"
         android:padding="12dp"
         android:textSize="16sp"
-        android:focusable="false"
-        android:clickable="true"
-        app:layout_constraintTop_toBottomOf="@id/goalAmountInput"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/goalAmountInput" />
 
 
     <!-- Save Goal Button -->

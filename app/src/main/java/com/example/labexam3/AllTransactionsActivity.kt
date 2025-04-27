@@ -273,7 +273,7 @@ class AllTransactionsActivity : AppCompatActivity() {
                 setPadding(0, 8, 0, 0)
             }
 
-            // Button container for Edit and Delete buttons
+
             val buttonContainer = LinearLayout(this).apply {
                 orientation = LinearLayout.HORIZONTAL
                 layoutParams = LinearLayout.LayoutParams(
@@ -328,13 +328,13 @@ class AllTransactionsActivity : AppCompatActivity() {
     }
 
     private fun deleteTransaction(transactionToDelete: String) {
-        // Parse the transaction to determine its type and amount
+
         val parts = transactionToDelete.split(": ", " - ")
         val type = parts.getOrNull(0) ?: "Unknown"
         val amountString = parts.getOrNull(1)?.replace("Rs. ", "") ?: "0"
         val amount = amountString.toFloatOrNull() ?: 0f
 
-        // Update financial summary (income, expenses, savings)
+
         var income = sharedPreferences.getFloat("income", 0f)
         var expenses = sharedPreferences.getFloat("expenses", 0f)
         var savings = sharedPreferences.getFloat("savings", 0f)
@@ -345,13 +345,13 @@ class AllTransactionsActivity : AppCompatActivity() {
             "saving" -> savings -= amount
         }
 
-        // Update transactions
+
         var transactions = sharedPreferences.getString("transactions", "") ?: ""
         transactions = transactions.split("\n")
             .filter { it.isNotBlank() && it != transactionToDelete }
             .joinToString("\n") { it }
 
-        // Update transaction_details
+
         var transactionDetails = sharedPreferences.getString("transaction_details", "") ?: ""
         val transactionDetailsList = transactionDetails.split("\n").filter { it.isNotBlank() }
         val matchingDetail = transactionDetailsList.find { detail ->
@@ -365,7 +365,7 @@ class AllTransactionsActivity : AppCompatActivity() {
             .filter { it != matchingDetail }
             .joinToString("\n") { it }
 
-        // Save updated values
+
         editor.putFloat("income", income.coerceAtLeast(0f))
         editor.putFloat("expenses", expenses.coerceAtLeast(0f))
         editor.putFloat("savings", savings.coerceAtLeast(0f))
@@ -373,7 +373,7 @@ class AllTransactionsActivity : AppCompatActivity() {
         editor.putString("transaction_details", transactionDetails)
         editor.apply()
 
-        // Reload the UI
+
         loadTransactions()
     }
 }
